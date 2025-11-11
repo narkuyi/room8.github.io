@@ -187,6 +187,43 @@ a {
   font-weight: 500;
 }
 
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-profile__info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-profile__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-profile__details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-profile__name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.user-profile__email {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* Buttons */
 
 .btn {
