@@ -3,6 +3,7 @@ const state = {
   listings: [],
   filteredRoommates: [],
   filteredListings: [],
+  currentLanguage: localStorage.getItem("language") || "ru",
 };
 
 const elements = {
@@ -15,9 +16,17 @@ const elements = {
   filterBudget: document.getElementById("filterBudget"),
   budgetValue: document.getElementById("budgetValue"),
   filterRoommates: document.getElementById("filterRoommates"),
+  filterAgeMin: document.getElementById("filterAgeMin"),
+  filterAgeMax: document.getElementById("filterAgeMax"),
+  filterGender: document.getElementById("filterGender"),
+  filterInterests: document.getElementById("filterInterests"),
   resetFilters: document.getElementById("resetFilters"),
   globalSearchForm: document.getElementById("globalSearchForm"),
   globalSearchInput: document.getElementById("globalSearchInput"),
+  loginForm: document.getElementById("loginForm"),
+  registerForm: document.getElementById("registerForm"),
+  langRu: document.getElementById("langRu"),
+  langEn: document.getElementById("langEn"),
 };
 
 const citiesKZ = [
@@ -79,7 +88,7 @@ const sampleData = {
       budget: 180000,
       bio: "Работаю над стартапом, ищу дружелюбных соседей.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=33",
+      avatar: "https://i.pravatar.cc/300?img=20",
     },
     {
       id: 3,
@@ -115,7 +124,7 @@ const sampleData = {
       budget: 160000,
       bio: "Спортсмен и молодой профессионал, ищу активных соседей.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=15",
+      avatar: "https://i.pravatar.cc/300?img=21",
     },
     {
       id: 5,
@@ -151,7 +160,115 @@ const sampleData = {
       budget: 190000,
       bio: "Инженер-энергетик, люблю живую музыку и коворкинги.",
       languages: ["Русский", "Английский", "Украинский"],
-      avatar: "https://i.pravatar.cc/300?img=54",
+      avatar: "https://i.pravatar.cc/300?img=22",
+    },
+    {
+      id: 7,
+      firstName: "Дана",
+      lastName: "Омарова",
+      age: 20,
+      university: "КазНУ",
+      faculty: "Факультет журналистики",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Уборка", "Покупка продуктов"],
+      interests: ["Журналистика", "Кино", "Фотография"],
+      city: "Алматы",
+      budget: 170000,
+      bio: "Студентка-журналистка, люблю творческую атмосферу.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=68",
+    },
+    {
+      id: 8,
+      firstName: "Ерлан",
+      lastName: "Касымов",
+      age: 23,
+      university: "КБТУ",
+      faculty: "Факультет информационных технологий",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Техническая помощь", "Уборка"],
+      interests: ["Программирование", "Игры", "Спорт"],
+      city: "Алматы",
+      budget: 175000,
+      bio: "Разработчик, ценю тишину и порядок.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=23",
+    },
+    {
+      id: 9,
+      firstName: "Жанар",
+      lastName: "Бекова",
+      age: 22,
+      university: "Назарбаев Университет",
+      faculty: "Школа медицины",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Готовка", "Уборка"],
+      interests: ["Медицина", "Йога", "Кулинария"],
+      city: "Астана",
+      budget: 210000,
+      bio: "Будущий врач, люблю здоровый образ жизни.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=69",
+    },
+    {
+      id: 10,
+      firstName: "Айдар",
+      lastName: "Сейтов",
+      age: 24,
+      university: "ENU",
+      faculty: "Факультет экономики",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Оплата коммунальных", "Покупка продуктов"],
+      interests: ["Экономика", "Трейдинг", "Спорт"],
+      city: "Астана",
+      budget: 195000,
+      bio: "Экономист, увлекаюсь финансовыми рынками.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=24",
+    },
+    {
+      id: 11,
+      firstName: "Сабина",
+      lastName: "Исмаилова",
+      age: 21,
+      university: "КазГЮУ",
+      faculty: "Юридический",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Уборка", "Организация пространства"],
+      interests: ["Право", "Чтение", "Танцы"],
+      city: "Алматы",
+      budget: 185000,
+      bio: "Студентка-юрист, активная и общительная.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=70",
+    },
+    {
+      id: 12,
+      firstName: "Данияр",
+      lastName: "Абдуллаев",
+      age: 25,
+      university: "SDU University",
+      faculty: "Факультет бизнеса",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Техническая помощь", "Уборка"],
+      interests: ["Бизнес", "Спорт", "Путешествия"],
+      city: "Алматы",
+      budget: 200000,
+      bio: "Предприниматель, ищу единомышленников.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=26",
     },
   ],
   listings: [
@@ -259,24 +376,47 @@ function populateCities() {
 
 function renderRoommates(roommates) {
   elements.roommatesGrid.innerHTML = "";
+  if (roommates.length === 0) {
+    elements.roommatesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #757575;">Сожители не найдены. Попробуйте изменить фильтры.</p>';
+    return;
+  }
   roommates.forEach((roommate) => {
     const card = document.createElement("article");
     card.className = "user-card";
+    const genderIcon = roommate.gender === "женский" ? "♀" : "♂";
     card.innerHTML = `
+      <div class="user-card__avatar">
+        <img src="${roommate.avatar}" alt="${roommate.firstName} ${roommate.lastName}" />
+        <span class="gender-badge">${genderIcon}</span>
+      </div>
       <div class="user-card__header">
         <h3>${roommate.firstName} ${roommate.lastName}, ${roommate.age} лет</h3>
         <span class="tag">${roommate.city}</span>
       </div>
-      <p>Университет: ${roommate.university}, ${roommate.faculty}</p>
-      <p>Нация: ${roommate.nationality}, Иммигрант: ${
-      roommate.immigrant ? "Да" : "Нет"
-    }</p>
-      <div class="tag-list">
-        ${roommate.homeDuties
-          .map((duty) => `<span class="tag">${duty}</span>`)
-          .join("")}
+      <p class="user-card__university">${roommate.university}</p>
+      <p class="user-card__faculty">${roommate.faculty}</p>
+      <div class="user-card__info">
+        <p><strong>Пол:</strong> ${roommate.gender === "женский" ? "Женский" : "Мужской"}</p>
+        <p><strong>Нация:</strong> ${roommate.nationality}</p>
+        <p><strong>Иммигрант:</strong> ${roommate.immigrant ? "Да" : "Нет"}</p>
+        <p><strong>Бюджет:</strong> ${formatCurrency(roommate.budget)}</p>
       </div>
-      <p>Интересы: ${roommate.interests.join(", ")}</p>
+      <div class="user-card__duties">
+        <strong>Обязанности:</strong>
+        <div class="tag-list">
+          ${roommate.homeDuties
+            .map((duty) => `<span class="tag">${duty}</span>`)
+            .join("")}
+        </div>
+      </div>
+      <div class="user-card__interests">
+        <strong>Интересы:</strong>
+        <div class="tag-list">
+          ${roommate.interests
+            .map((interest) => `<span class="tag tag--interest">${interest}</span>`)
+            .join("")}
+        </div>
+      </div>
       <button class="btn btn--primary view-profile" data-roommate-id="${
         roommate.id
       }">Просмотреть профиль</button>
@@ -355,6 +495,10 @@ function applyFilters() {
   const cityValue = elements.filterCity.value;
   const budgetValue = Number(elements.filterBudget.value);
   const roommatesValue = elements.filterRoommates.value;
+  const ageMin = Number(elements.filterAgeMin?.value || 18);
+  const ageMax = Number(elements.filterAgeMax?.value || 25);
+  const genderValue = elements.filterGender?.value || "all";
+  const selectedInterests = Array.from(elements.filterInterests?.selectedOptions || []).map(opt => opt.value);
   const selectedPrefs = getSelectedPreferences();
   const searchQuery = elements.globalSearchInput.value.trim().toLowerCase();
 
@@ -386,6 +530,24 @@ function applyFilters() {
     return haystack.includes(searchQuery);
   };
 
+  const ageFilter = (roommate) => {
+    return roommate.age >= ageMin && roommate.age <= ageMax;
+  };
+
+  const genderFilter = (roommate) => {
+    if (genderValue === "all") return true;
+    return roommate.gender === genderValue;
+  };
+
+  const interestsFilter = (roommate) => {
+    if (selectedInterests.length === 0) return true;
+    return selectedInterests.some(interest => 
+      roommate.interests.some(rInterest => 
+        rInterest.toLowerCase().includes(interest.toLowerCase())
+      )
+    );
+  };
+
   const searchFilterRoommates = (roommate) => {
     if (!searchQuery) return true;
     const haystack = [
@@ -394,6 +556,7 @@ function applyFilters() {
       roommate.university,
       roommate.faculty,
       roommate.city,
+      ...roommate.interests,
     ]
       .join(" ")
       .toLowerCase();
@@ -410,6 +573,9 @@ function applyFilters() {
   state.filteredRoommates = state.roommates
     .filter((item) => cityValue === "all" || item.city === cityValue)
     .filter((item) => item.budget <= budgetValue)
+    .filter(ageFilter)
+    .filter(genderFilter)
+    .filter(interestsFilter)
     .filter(searchFilterRoommates);
 
   renderRoommates(state.filteredRoommates);
@@ -426,6 +592,12 @@ function resetFilters() {
   elements.filtersForm.reset();
   elements.filterBudget.value = 200000;
   elements.budgetValue.textContent = "200 000 ₸";
+  if (elements.filterAgeMin) elements.filterAgeMin.value = 18;
+  if (elements.filterAgeMax) elements.filterAgeMax.value = 25;
+  if (elements.filterGender) elements.filterGender.value = "all";
+  if (elements.filterInterests) {
+    Array.from(elements.filterInterests.options).forEach(opt => opt.selected = false);
+  }
   applyFilters();
 }
 
@@ -609,7 +781,13 @@ function initForms() {
     resetFilters();
   });
   elements.filtersForm.addEventListener("change", (event) => {
-    if (event.target.type === "checkbox" || event.target.tagName === "SELECT") {
+    if (event.target.type === "checkbox" || event.target.tagName === "SELECT" || event.target.type === "number") {
+      applyFilters();
+    }
+  });
+  
+  elements.filtersForm.addEventListener("input", (event) => {
+    if (event.target.type === "number" && (event.target.id === "filterAgeMin" || event.target.id === "filterAgeMax")) {
       applyFilters();
     }
   });
@@ -742,6 +920,101 @@ function enhanceTagStyles() {
   document.head.append(style);
 }
 
+const translations = {
+  ru: {
+    "login.title": "Войти",
+    "login.email": "Электронная почта",
+    "login.password": "Пароль",
+    "login.submit": "Войти",
+    "login.cancel": "Отмена",
+    "register.title": "Регистрация",
+    "register.firstName": "Имя",
+    "register.lastName": "Фамилия",
+    "register.email": "Электронная почта",
+    "register.phone": "Номер телефона",
+    "register.university": "Университет",
+    "register.preferences": "Предпочтения",
+    "register.hobbies": "Хобби",
+    "register.password": "Пароль",
+    "register.submit": "Зарегистрироваться",
+    "register.cancel": "Отмена",
+  },
+  en: {
+    "login.title": "Sign In",
+    "login.email": "Email",
+    "login.password": "Password",
+    "login.submit": "Sign In",
+    "login.cancel": "Cancel",
+    "register.title": "Register",
+    "register.firstName": "First Name",
+    "register.lastName": "Last Name",
+    "register.email": "Email",
+    "register.phone": "Phone Number",
+    "register.university": "University",
+    "register.preferences": "Preferences",
+    "register.hobbies": "Hobbies",
+    "register.password": "Password",
+    "register.submit": "Register",
+    "register.cancel": "Cancel",
+  },
+};
+
+function updateLanguage(lang) {
+  state.currentLanguage = lang;
+  localStorage.setItem("language", lang);
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  if (elements.langRu && elements.langEn) {
+    elements.langRu.classList.toggle("active", lang === "ru");
+    elements.langEn.classList.toggle("active", lang === "en");
+  }
+}
+
+function initLanguage() {
+  if (elements.langRu && elements.langEn) {
+    elements.langRu.addEventListener("click", () => updateLanguage("ru"));
+    elements.langEn.addEventListener("click", () => updateLanguage("en"));
+    updateLanguage(state.currentLanguage);
+  }
+}
+
+function initAuthForms() {
+  if (elements.loginForm) {
+    elements.loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      console.log("Login attempt:", { email, password });
+      alert("Функция входа будет реализована на бэкенде");
+      closeModal(document.getElementById("loginModal"));
+    });
+  }
+
+  if (elements.registerForm) {
+    elements.registerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = {
+        firstName: document.getElementById("regFirstName").value,
+        lastName: document.getElementById("regLastName").value,
+        email: document.getElementById("regEmail").value,
+        phone: document.getElementById("regPhone").value,
+        university: document.getElementById("regUniversity").value,
+        preferences: document.getElementById("regPreferences").value,
+        hobbies: document.getElementById("regHobbies").value,
+        password: document.getElementById("regPassword").value,
+      };
+      console.log("Registration data:", formData);
+      alert("Регистрация успешна! Данные будут отправлены на сервер.");
+      closeModal(document.getElementById("registerModal"));
+      elements.registerForm.reset();
+    });
+  }
+}
+
 function initialize() {
   initData();
   populateCities();
@@ -753,6 +1026,9 @@ function initialize() {
   bindDynamicEvents();
   initCharts();
   enhanceTagStyles();
+  initLanguage();
+  initAuthForms();
 }
 
 document.addEventListener("DOMContentLoaded", initialize);
+
