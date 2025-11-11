@@ -4,6 +4,7 @@ const state = {
   filteredRoommates: [],
   filteredListings: [],
   currentLanguage: localStorage.getItem("language") || "ru",
+  currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
 };
 
 const elements = {
@@ -27,6 +28,12 @@ const elements = {
   registerForm: document.getElementById("registerForm"),
   langRu: document.getElementById("langRu"),
   langEn: document.getElementById("langEn"),
+  loginRegisterButtons: document.querySelector(".login-register-buttons"),
+  userProfile: document.querySelector(".user-profile"),
+  userProfileAvatar: document.querySelector(".user-profile__avatar"),
+  userProfileName: document.querySelector(".user-profile__name"),
+  userProfileEmail: document.querySelector(".user-profile__email"),
+  logoutBtn: document.getElementById("logoutBtn"),
 };
 
 const citiesKZ = [
@@ -70,7 +77,7 @@ const sampleData = {
       budget: 220000,
       bio: "Люблю порядок в доме и вечерние занятия йогой.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=12",
+      avatar: "https://i.pravatar.cc/300?img=12", // женский
     },
     {
       id: 2,
@@ -88,7 +95,7 @@ const sampleData = {
       budget: 180000,
       bio: "Работаю над стартапом, ищу дружелюбных соседей.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=20",
+      avatar: "https://i.pravatar.cc/300?img=20", // мужской
     },
     {
       id: 3,
@@ -106,7 +113,7 @@ const sampleData = {
       budget: 200000,
       bio: "Люблю уют и совместные вечера за настольными играми.",
       languages: ["Русский", "Английский", "Узбекский"],
-      avatar: "https://i.pravatar.cc/300?img=47",
+      avatar: "https://i.pravatar.cc/300?img=47", // женский
     },
     {
       id: 4,
@@ -124,7 +131,7 @@ const sampleData = {
       budget: 160000,
       bio: "Спортсмен и молодой профессионал, ищу активных соседей.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=21",
+      avatar: "https://i.pravatar.cc/300?img=21", // мужской
     },
     {
       id: 5,
@@ -142,7 +149,7 @@ const sampleData = {
       budget: 230000,
       bio: "Помогу сделать дом стильным и удобным.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=25",
+      avatar: "https://i.pravatar.cc/300?img=25", // женский
     },
     {
       id: 6,
@@ -160,7 +167,7 @@ const sampleData = {
       budget: 190000,
       bio: "Инженер-энергетик, люблю живую музыку и коворкинги.",
       languages: ["Русский", "Английский", "Украинский"],
-      avatar: "https://i.pravatar.cc/300?img=22",
+      avatar: "https://i.pravatar.cc/300?img=22", // мужской
     },
     {
       id: 7,
@@ -178,7 +185,7 @@ const sampleData = {
       budget: 170000,
       bio: "Студентка-журналистка, люблю творческую атмосферу.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=68",
+      avatar: "https://i.pravatar.cc/300?img=68", // женский
     },
     {
       id: 8,
@@ -196,7 +203,7 @@ const sampleData = {
       budget: 175000,
       bio: "Разработчик, ценю тишину и порядок.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=23",
+      avatar: "https://i.pravatar.cc/300?img=23", // мужской
     },
     {
       id: 9,
@@ -214,7 +221,7 @@ const sampleData = {
       budget: 210000,
       bio: "Будущий врач, люблю здоровый образ жизни.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=69",
+      avatar: "https://i.pravatar.cc/300?img=69", // женский
     },
     {
       id: 10,
@@ -232,7 +239,7 @@ const sampleData = {
       budget: 195000,
       bio: "Экономист, увлекаюсь финансовыми рынками.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=24",
+      avatar: "https://i.pravatar.cc/300?img=24", // мужской
     },
     {
       id: 11,
@@ -250,7 +257,7 @@ const sampleData = {
       budget: 185000,
       bio: "Студентка-юрист, активная и общительная.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=70",
+      avatar: "https://i.pravatar.cc/300?img=70", // женский
     },
     {
       id: 12,
@@ -268,8 +275,204 @@ const sampleData = {
       budget: 200000,
       bio: "Предприниматель, ищу единомышленников.",
       languages: ["Казахский", "Русский", "Английский"],
-      avatar: "https://i.pravatar.cc/300?img=26",
+      avatar: "https://i.pravatar.cc/300?img=26", // мужской
     },
+    {
+      id: 13,
+      firstName: "Амина",
+      lastName: "Касымова",
+      age: 20,
+      university: "КазНУ",
+      faculty: "Факультет филологии",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Уборка", "Полив растений"],
+      interests: ["Литература", "Поэзия", "Театр"],
+      city: "Алматы",
+      budget: 165000,
+      bio: "Студентка-филолог, люблю искусство и культуру.",
+      languages: ["Казахский", "Русский", "Английский", "Турецкий"],
+      avatar: "https://i.pravatar.cc/300?img=71",
+    },
+    {
+      id: 14,
+      firstName: "Нурлан",
+      lastName: "Беков",
+      age: 23,
+      university: "КБТУ",
+      faculty: "Факультет машиностроения",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Ремонт", "Техническая помощь"],
+      interests: ["Инженерия", "Автомобили", "Спорт"],
+      city: "Алматы",
+      budget: 185000,
+      bio: "Инженер-механик, увлекаюсь автомобилями.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=27",
+    },
+    {
+      id: 15,
+      firstName: "Айжан",
+      lastName: "Нурланова",
+      age: 21,
+      university: "Назарбаев Университет",
+      faculty: "Школа наук и технологий",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Готовка", "Уборка"],
+      interests: ["Наука", "Исследования", "Книги"],
+      city: "Астана",
+      budget: 205000,
+      bio: "Исследователь, увлекаюсь наукой и технологиями.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=72",
+    },
+    {
+      id: 16,
+      firstName: "Ерболат",
+      lastName: "Абдуллаев",
+      age: 24,
+      university: "ENU",
+      faculty: "Факультет строительства",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Ремонт", "Сборка мебели"],
+      interests: ["Строительство", "Архитектура", "Дизайн"],
+      city: "Астана",
+      budget: 190000,
+      bio: "Строитель, люблю создавать что-то своими руками.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=28",
+    },
+    {
+      id: 17,
+      firstName: "Жанна",
+      lastName: "Тулегенова",
+      age: 22,
+      university: "КазГЮУ",
+      faculty: "Экономический",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Покупка продуктов", "Уборка"],
+      interests: ["Экономика", "Маркетинг", "Мода"],
+      city: "Алматы",
+      budget: 195000,
+      bio: "Экономист, интересуюсь модой и стилем.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=73",
+    },
+    {
+      id: 18,
+      firstName: "Асхат",
+      lastName: "Омаров",
+      age: 25,
+      university: "SDU University",
+      faculty: "Факультет туризма",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Организация пространства", "Уборка"],
+      interests: ["Туризм", "Путешествия", "Фотография"],
+      city: "Алматы",
+      budget: 180000,
+      bio: "Турист, люблю путешествовать и открывать новые места.",
+      languages: ["Казахский", "Русский", "Английский", "Турецкий"],
+      avatar: "https://i.pravatar.cc/300?img=29",
+    },
+    {
+      id: 19,
+      firstName: "Алтынай",
+      lastName: "Жумабекова",
+      age: 19,
+      university: "КазНУ",
+      faculty: "Факультет психологии",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "женский",
+      homeDuties: ["Помощь с готовкой", "Уборка"],
+      interests: ["Психология", "Медитация", "Йога"],
+      city: "Алматы",
+      budget: 175000,
+      bio: "Студентка-психолог, ценю гармонию и спокойствие.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=74",
+    },
+    {
+      id: 20,
+      firstName: "Бауыржан",
+      lastName: "Сейтов",
+      age: 23,
+      university: "КБТУ",
+      faculty: "Факультет нефти и газа",
+      immigrant: false,
+      nationality: "Казахстан",
+      gender: "мужской",
+      homeDuties: ["Оплата коммунальных", "Техническая помощь"],
+      interests: ["Нефть и газ", "Спорт", "Музыка"],
+      city: "Алматы",
+      budget: 200000,
+      bio: "Инженер-нефтяник, активный и общительный.",
+      languages: ["Казахский", "Русский", "Английский"],
+      avatar: "https://i.pravatar.cc/300?img=30",
+    },
+    // Добавляем еще сожителей для достижения 50+
+    ...Array.from({ length: 30 }, (_, i) => {
+      const id = 21 + i;
+      const genders = ["мужской", "женский"];
+      const cities = ["Алматы", "Астана", "Шымкент", "Караганда", "Актобе", "Тараз", "Павлодар", "Усть-Каменогорск", "Семей", "Атырау"];
+      const universities = ["КазНУ", "КБТУ", "Назарбаев Университет", "ENU", "SDU University", "КазГЮУ"];
+      const faculties = ["Факультет информационных технологий", "Экономический", "Юридический", "Факультет бизнеса", "Школа инженерии", "Факультет дизайна"];
+      const interests = [["Программирование", "Спорт", "Музыка"], ["Йога", "Чтение", "Кино"], ["Дизайн", "Фотография", "Путешествия"], ["Спорт", "Игры", "Технологии"], ["Кулинария", "Искусство", "Театр"]];
+      const homeDuties = [["Уборка", "Готовка"], ["Покупка продуктов", "Уборка"], ["Техническая помощь", "Ремонт"], ["Оплата коммунальных", "Уборка"]];
+      
+      const gender = genders[Math.floor(Math.random() * genders.length)];
+      const age = 18 + Math.floor(Math.random() * 8);
+      const city = cities[Math.floor(Math.random() * cities.length)];
+      const university = universities[Math.floor(Math.random() * universities.length)];
+      const faculty = faculties[Math.floor(Math.random() * faculties.length)];
+      const budget = 150000 + Math.floor(Math.random() * 100000);
+      
+      const maleNames = ["Аслан", "Данияр", "Ерлан", "Нурлан", "Темирлан", "Айдар", "Бауыржан", "Ерболат", "Асхат", "Нуртас"];
+      const femaleNames = ["Айжан", "Амина", "Алтынай", "Жанна", "Сауле", "Айгуль", "Алма", "Асель", "Дана", "Жанар"];
+      const maleSurnames = ["Нуртазин", "Сейтов", "Абдуллаев", "Омаров", "Беков", "Касымов", "Жумабеков", "Ахметов"];
+      const femaleSurnames = ["Нурланова", "Касымова", "Тулегенова", "Жумабекова", "Ахметова", "Омарова", "Бекова", "Садыкова"];
+      
+      const firstName = gender === "мужской" 
+        ? maleNames[Math.floor(Math.random() * maleNames.length)]
+        : femaleNames[Math.floor(Math.random() * femaleNames.length)];
+      const lastName = gender === "мужской"
+        ? maleSurnames[Math.floor(Math.random() * maleSurnames.length)]
+        : femaleSurnames[Math.floor(Math.random() * femaleSurnames.length)];
+      
+      const avatarId = gender === "женский" 
+        ? [12, 25, 47, 68, 69, 70, 71, 72, 73, 74][Math.floor(Math.random() * 10)]
+        : [20, 21, 22, 23, 24, 26, 27, 28, 29, 30][Math.floor(Math.random() * 10)];
+      
+      return {
+        id,
+        firstName,
+        lastName,
+        age,
+        university,
+        faculty,
+        immigrant: Math.random() > 0.8,
+        nationality: Math.random() > 0.8 ? ["Узбекистан", "Украина", "Россия"][Math.floor(Math.random() * 3)] : "Казахстан",
+        gender,
+        homeDuties: homeDuties[Math.floor(Math.random() * homeDuties.length)],
+        interests: interests[Math.floor(Math.random() * interests.length)],
+        city,
+        budget,
+        bio: `${gender === "мужской" ? "Студент" : "Студентка"}, ищу ${gender === "мужской" ? "дружелюбных соседей" : "комфортное жилье"}.`,
+        languages: ["Казахский", "Русский", "Английский"],
+        avatar: `https://i.pravatar.cc/300?img=${avatarId}`,
+      };
+    }),
   ],
   listings: [
     {
@@ -922,6 +1125,9 @@ function enhanceTagStyles() {
 
 const translations = {
   ru: {
+    "header.login": "Войти",
+    "header.register": "Зарегистрироваться",
+    "header.logout": "Выйти",
     "login.title": "Войти",
     "login.email": "Электронная почта",
     "login.password": "Пароль",
@@ -935,11 +1141,16 @@ const translations = {
     "register.university": "Университет",
     "register.preferences": "Предпочтения",
     "register.hobbies": "Хобби",
+    "register.gender": "Пол",
+    "register.age": "Возраст",
     "register.password": "Пароль",
     "register.submit": "Зарегистрироваться",
     "register.cancel": "Отмена",
   },
   en: {
+    "header.login": "Sign In",
+    "header.register": "Register",
+    "header.logout": "Logout",
     "login.title": "Sign In",
     "login.email": "Email",
     "login.password": "Password",
@@ -953,6 +1164,8 @@ const translations = {
     "register.university": "University",
     "register.preferences": "Preferences",
     "register.hobbies": "Hobbies",
+    "register.gender": "Gender",
+    "register.age": "Age",
     "register.password": "Password",
     "register.submit": "Register",
     "register.cancel": "Cancel",
@@ -982,15 +1195,106 @@ function initLanguage() {
   }
 }
 
+function getAvatarByGenderAndAge(gender, age) {
+  // Генерируем аватар на основе пола и возраста (18-25 лет)
+  if (gender === "женский" || gender === "female") {
+    // Женские аватары для молодых (18-25)
+    const femaleAvatars = [12, 25, 47, 68, 69, 70, 71, 72, 73, 74];
+    return `https://i.pravatar.cc/300?img=${femaleAvatars[Math.floor(Math.random() * femaleAvatars.length)]}`;
+  } else {
+    // Мужские аватары для молодых (18-25)
+    const maleAvatars = [20, 21, 22, 23, 24, 26, 27, 28, 29, 30];
+    return `https://i.pravatar.cc/300?img=${maleAvatars[Math.floor(Math.random() * maleAvatars.length)]}`;
+  }
+}
+
+function updateUserProfileUI() {
+  if (state.currentUser && elements.userProfile && elements.loginRegisterButtons) {
+    elements.loginRegisterButtons.style.display = "none";
+    elements.userProfile.style.display = "flex";
+    if (elements.userProfileAvatar) {
+      elements.userProfileAvatar.src = state.currentUser.avatar || getAvatarByGenderAndAge(state.currentUser.gender || "мужской", state.currentUser.age || 22);
+    }
+    if (elements.userProfileName) {
+      elements.userProfileName.textContent = `${state.currentUser.firstName} ${state.currentUser.lastName}`;
+    }
+    if (elements.userProfileEmail) {
+      elements.userProfileEmail.textContent = state.currentUser.email;
+    }
+  } else if (elements.userProfile && elements.loginRegisterButtons) {
+    elements.loginRegisterButtons.style.display = "flex";
+    elements.userProfile.style.display = "none";
+  }
+}
+
+function loginUser(email, password) {
+  // В реальном приложении здесь будет запрос к серверу
+  // Для демо используем localStorage
+  const users = JSON.parse(localStorage.getItem("users") || "[]");
+  const user = users.find(u => u.email === email && u.password === password);
+  
+  if (user) {
+    state.currentUser = user;
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    updateUserProfileUI();
+    return true;
+  }
+  return false;
+}
+
+function registerUser(userData) {
+  // Генерируем аватар на основе пола
+  const gender = userData.gender || "мужской";
+  const age = parseInt(userData.age) || 22;
+  const avatar = getAvatarByGenderAndAge(gender, age);
+  
+  const newUser = {
+    id: Date.now(),
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    email: userData.email,
+    phone: userData.phone,
+    university: userData.university,
+    preferences: userData.preferences,
+    hobbies: userData.hobbies,
+    password: userData.password,
+    gender: gender,
+    age: age,
+    avatar: avatar,
+    registeredAt: new Date().toISOString(),
+  };
+  
+  const users = JSON.parse(localStorage.getItem("users") || "[]");
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
+  
+  state.currentUser = newUser;
+  localStorage.setItem("currentUser", JSON.stringify(newUser));
+  updateUserProfileUI();
+  
+  return newUser;
+}
+
+function logoutUser() {
+  state.currentUser = null;
+  localStorage.removeItem("currentUser");
+  updateUserProfileUI();
+}
+
 function initAuthForms() {
   if (elements.loginForm) {
     elements.loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
-      console.log("Login attempt:", { email, password });
-      alert("Функция входа будет реализована на бэкенде");
-      closeModal(document.getElementById("loginModal"));
+      
+      if (loginUser(email, password)) {
+        alert(state.currentLanguage === "ru" ? "Вход выполнен успешно!" : "Login successful!");
+        closeModal(document.getElementById("loginModal"));
+        elements.loginForm.reset();
+      } else {
+        alert(state.currentLanguage === "ru" ? "Неверный email или пароль" : "Invalid email or password");
+      }
     });
   }
 
@@ -1006,13 +1310,26 @@ function initAuthForms() {
         preferences: document.getElementById("regPreferences").value,
         hobbies: document.getElementById("regHobbies").value,
         password: document.getElementById("regPassword").value,
+        gender: document.getElementById("regGender")?.value || "мужской",
+        age: parseInt(document.getElementById("regAge")?.value) || 22,
       };
-      console.log("Registration data:", formData);
-      alert("Регистрация успешна! Данные будут отправлены на сервер.");
+      
+      registerUser(formData);
+      alert(state.currentLanguage === "ru" ? "Регистрация успешна!" : "Registration successful!");
       closeModal(document.getElementById("registerModal"));
       elements.registerForm.reset();
     });
   }
+
+  if (elements.logoutBtn) {
+    elements.logoutBtn.addEventListener("click", () => {
+      logoutUser();
+      alert(state.currentLanguage === "ru" ? "Вы вышли из системы" : "You have logged out");
+    });
+  }
+  
+  // Проверяем авторизацию при загрузке
+  updateUserProfileUI();
 }
 
 function initialize() {
