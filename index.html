@@ -52,8 +52,12 @@
           <button type="submit" class="btn btn--primary">Поиск</button>
         </form>
         <div class="header__actions">
-          <button class="btn btn--secondary">Войти</button>
-          <button class="btn btn--primary">Зарегистрироваться</button>
+          <div class="language-selector">
+            <button class="lang-btn" id="langRu" data-lang="ru">Русский</button>
+            <button class="lang-btn" id="langEn" data-lang="en">English</button>
+          </div>
+          <button class="btn btn--secondary" data-modal-target="loginModal">Войти</button>
+          <button class="btn btn--primary" data-modal-target="registerModal">Зарегистрироваться</button>
         </div>
       </header>
 
@@ -137,8 +141,39 @@
                 </label>
               </div>
               <div class="form__row">
+                <label class="form__field">
+                  <span class="form__label">Возраст (от)</span>
+                  <input type="number" id="filterAgeMin" min="18" max="25" value="18" class="form__select" />
+                </label>
+                <label class="form__field">
+                  <span class="form__label">Возраст (до)</span>
+                  <input type="number" id="filterAgeMax" min="18" max="25" value="25" class="form__select" />
+                </label>
+                <label class="form__field">
+                  <span class="form__label">Пол</span>
+                  <select id="filterGender" class="form__select">
+                    <option value="all">Не важно</option>
+                    <option value="мужской">Мужской</option>
+                    <option value="женский">Женский</option>
+                  </select>
+                </label>
+                <label class="form__field">
+                  <span class="form__label">Интересы</span>
+                  <select id="filterInterests" class="form__select" multiple>
+                    <option value="Йога">Йога</option>
+                    <option value="Программирование">Программирование</option>
+                    <option value="Спорт">Спорт</option>
+                    <option value="Дизайн">Дизайн</option>
+                    <option value="Музыка">Музыка</option>
+                    <option value="Кино">Кино</option>
+                    <option value="Путешествия">Путешествия</option>
+                  </select>
+                  <span class="form__hint">Удерживайте Ctrl для выбора нескольких</span>
+                </label>
+              </div>
+              <div class="form__row">
                 <fieldset class="form__checkbox-group">
-                  <legend class="form__label">Предпочтения</legend>
+                  <legend class="form__label">Предпочтения для жилья</legend>
                   <label class="checkbox">
                     <input type="checkbox" value="internet" />
                     <span>Высокоскоростной интернет</span>
@@ -433,6 +468,78 @@
             <button class="btn btn--primary">Подтвердить участие</button>
             <button class="btn btn--secondary" data-close>Закрыть</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal__overlay" data-close></div>
+      <div class="modal__content">
+        <button class="modal__close" type="button" data-close aria-label="Закрыть модальное окно">×</button>
+        <div class="modal__body">
+          <h2 data-i18n="login.title">Войти</h2>
+          <form class="modal__form" id="loginForm">
+            <label class="form__field">
+              <span class="form__label" data-i18n="login.email">Электронная почта</span>
+              <input type="email" id="loginEmail" name="email" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="login.password">Пароль</span>
+              <input type="password" id="loginPassword" name="password" required />
+            </label>
+            <div class="modal__actions">
+              <button type="submit" class="btn btn--primary" data-i18n="login.submit">Войти</button>
+              <button type="button" class="btn btn--secondary" data-close data-i18n="login.cancel">Отмена</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="registerModal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal__overlay" data-close></div>
+      <div class="modal__content">
+        <button class="modal__close" type="button" data-close aria-label="Закрыть модальное окно">×</button>
+        <div class="modal__body">
+          <h2 data-i18n="register.title">Регистрация</h2>
+          <form class="modal__form" id="registerForm">
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.firstName">Имя</span>
+              <input type="text" id="regFirstName" name="firstName" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.lastName">Фамилия</span>
+              <input type="text" id="regLastName" name="lastName" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.email">Электронная почта</span>
+              <input type="email" id="regEmail" name="email" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.phone">Номер телефона</span>
+              <input type="tel" id="regPhone" name="phone" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.university">Университет</span>
+              <input type="text" id="regUniversity" name="university" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.preferences">Предпочтения</span>
+              <textarea id="regPreferences" name="preferences" rows="3" placeholder="Уборка, тишина, совместное приготовление пищи и т.д." required></textarea>
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.hobbies">Хобби</span>
+              <input type="text" id="regHobbies" name="hobbies" required />
+            </label>
+            <label class="form__field">
+              <span class="form__label" data-i18n="register.password">Пароль</span>
+              <input type="password" id="regPassword" name="password" required />
+            </label>
+            <div class="modal__actions">
+              <button type="submit" class="btn btn--primary" data-i18n="register.submit">Зарегистрироваться</button>
+              <button type="button" class="btn btn--secondary" data-close data-i18n="register.cancel">Отмена</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
